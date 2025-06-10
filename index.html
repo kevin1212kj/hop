@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SolutionC Service | Freelancing Solutions</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .service-box:hover h3 { color: #1D4ED8; }
+        .hero {
+            background-image: linear-gradient(to right, #3b82f6, #06b6d4);
+            color: #fff;
+        }
+        .nav-link:hover { background-color: rgba(255, 255, 255, 0.2); }
+        .fade-in { animation: fadeIn 1.2s ease-in-out; }
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(10px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+        .scroll-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #3B82F6;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            z-index: 1000;
+        }
+        .scroll-to-top:hover {
+            background-color: #2563EB;
+            transform: translateY(-3px);
+        }
+        /* Slider specific styles */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin: 2rem auto; /* Added margin for spacing */
+            overflow: hidden;
+            border-radius: 1rem;
+            box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05); /* Enhanced shadow */
+        }
+        .slider-wrapper {
+            display: flex;
+            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smoother animation curve */
+        }
+        .slide {
+            min-width: 100%;
+            flex-shrink: 0;
+            text-align: center;
+            background-color: #f8f8f8; /* Lighter background */
+            position: relative; /* For overlay content */
+        }
+        .slide img {
+            width: 100%;
+            max-height: 500px;
+            object-fit: cover;
+            border-radius: 1rem;
+        }
+        .slide-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* Text shadow for readability */
+            max-width: 80%;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+        }
+        .slide.active .slide-content {
+            opacity: 1;
+            transform: translate(-50%, -50%);
+        }
+        .slide-content h2 {
+            font-size: 3.5rem; /* Larger heading */
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+        }
+        .slide-content p {
+            font-size: 1.5rem; /* Larger paragraph text */
+            margin-bottom: 1.5rem;
+        }
+        .slide-content .btn {
+            background-color: #3B82F6;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .slide-content .btn:hover {
+            background-color: #2563EB;
+            transform: translateY(-2px);
+        }
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.5rem; /* Increased margin */
+            position: absolute;
+            bottom: 1.5rem; /* Adjusted position */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+        .dot {
+            height: 14px; /* Larger dots */
+            width: 14px;
+            margin: 0 7px; /* Increased margin */
+            background-color: rgba(255, 255, 255, 0.7); /* Slightly more opaque */
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            border: 2px solid rgba(255, 255, 255, 0.9); /* Border for definition */
+        }
+        .dot.active {
+            background-color: #3B82F6;
+            border-color: #3B82F6;
+            transform: scale(1.2); /* Pop effect for active dot */
+        }
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3)); /* Gradient background */
+            color: white;
+            padding: 12px 18px; /* Larger padding */
+            font-size: 1.8rem; /* Larger arrow icon */
+            border-radius: 0.75rem; /* More rounded */
+            cursor: pointer;
+            z-index: 10;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Shadow for arrows */
+        }
+        .slider-arrow:hover {
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5));
+            transform: translateY(-50%) scale(1.05); /* Slight scale on hover */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+        .arrow-left {
+            left: 1.5rem; /* Adjusted position */
+            background: linear-gradient(to left, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3)); /* Left gradient */
+        }
+        .arrow-left:hover {
+            background: linear-gradient(to left, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5));
+        }
+        .arrow-right {
+            right: 1.5rem; /* Adjusted position */
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+<header class="bg-blue-600 text-white p-4 shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+        <div class="text-2xl font-bold">SolutionC Service</div>
+        <nav>
+            <ul class="flex space-x-6">
+                <li><a href="index.html" class="nav-link px-3 py-2 rounded-md transition-colors duration-200">Home</a></li>
+                <li><a href="services.html" class="nav-link px-3 py-2 rounded-md transition-colors duration-200">Services</a></li>
+                <li><a href="about.html" class="nav-link px-3 py-2 rounded-md transition-colors duration-200">About Us</a></li>
+                <li><a href="contact.html" class="nav-link px-3 py-2 rounded-md transition-colors duration-200">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<section class="hero text-center py-20 fade-in">
+    <div class="container mx-auto">
+        <h1 class="text-5xl font-extrabold mb-4">Your Partner in Freelancing Success</h1>
+        <p class="text-xl mb-8">Connecting talent with opportunities, seamlessly.</p>
+        <a href="#" class="bg-white text-blue-600 px-8 py-3 rounded-full text-lg font-semibold hover:bg-gray-100 transition duration-300 shadow-lg">Get Started</a>
+    </div>
+</section>
+
+<main class="container mx-auto my-12 p-6 bg-white rounded-lg shadow-xl">
+    <h2 class="text-4xl font-bold text-center text-gray-900 mb-10">Our Core Services</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="service-box bg-gray-100 p-8 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl hover:bg-blue-50">
+            
+            <div class="text-5xl text-blue-600 mb-4 text-center">💡</div>
+            <h3 class="text-2xl font-semibold text-gray-800 mb-3 text-center transition-colors duration-300">Strategy & Consulting</h3>
+            <p class="text-gray-600 text-center">We help you define clear goals and develop actionable strategies for your freelancing journey or business.</p>
+            <div class="text-center mt-6">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSfQg_Uc2NKFZWBQ9S4ZUsKSKdP8JpJNjBUbg88GdNpaKIH_ng/viewform?embedded=true" class="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition duration-300">Submit Request</a>
+            </div>
+        </div>
+        <div class="service-box bg-gray-100 p-8 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl hover:bg-blue-50">
+            <div class="text-5xl text-blue-600 mb-4 text-center">💻</div>
+            <h3 class="text-2xl font-semibold text-gray-800 mb-3 text-center transition-colors duration-300">Web Development</h3>
+            <p class="text-gray-600 text-center">Crafting stunning and functional websites that convert visitors into clients for your brand.</p>
+            <div class="text-center mt-6">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLScfLCQ91NrHOOHDvLPXnmgQggHlVUHPojjKoQLCl1uaV2cv8w/viewform?embedded=true" class="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition duration-300">Submit Request</a>
+            </div>
+        </div>
+        <div class="service-box bg-gray-100 p-8 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl hover:bg-blue-50">
+            <div class="text-5xl text-blue-600 mb-4 text-center">🎨</div>
+            <h3 class="text-2xl font-semibold text-gray-800 mb-3 text-center transition-colors duration-300">Graphic Design</h3>
+            <p class="text-gray-600 text-center">Visually appealing designs that communicate your message effectively and leave a lasting impression.</p>
+            <div class="text-center mt-6">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdTUHLn0eUDWD6Lmvv0LBsk4wvkbx8eiYNLoJ5ZUOdXCBWQYQ/viewform?embedded=true" class="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition duration-300">Submit Request</a>
+            </div>
+        </div>
+        <div class="service-box bg-gray-100 p-8 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl hover:bg-blue-50">
+            <div class="text-5xl text-blue-600 mb-4 text-center">✍️</div>
+            <h3 class="text-2xl font-semibold text-gray-800 mb-3 text-center transition-colors duration-300">Content Creation</h3>
+            <p class="text-gray-600 text-center">Engaging and SEO-friendly content that resonates with your audience and drives organic traffic.</p>
+            <div class="text-center mt-6">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdIiNJrkz356seSejfmSEkF21gE7jB3O2DVOOb2WggeN3nnDg/viewform?embedded=true" class="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition duration-300">Submit Request</a>
+            </div>
+        </div>
+        <div class="service-box bg-gray-100 p-8 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl hover:bg-blue-50">
+            <div class="text-5xl text-blue-600 mb-4 text-center">📈</div>
+            <h3 class="text-2xl font-semibold text-gray-800 mb-3 text-center transition-colors duration-300">Digital Marketing</h3>
+            <p class="text-gray-600 text-center">Boost your online presence and reach a wider audience with our targeted digital marketing strategies.</p>
+            <div class="text-center mt-6">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSfzDx4Ls13X0t2Img6qHUEp0a1XkZ7R1Co-L_bCEiPY9Cw2yA/viewform?usp=header" class="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition duration-300">Submit Request</a>
+            </div>
+        </div>
+        <div class="service-box bg-gray-100 p-8 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl hover:bg-blue-50">
+            <div class="text-5xl text-blue-600 mb-4 text-center">⚙️</div>
+            <h3 class="text-2xl font-semibold text-gray-800 mb-3 text-center transition-colors duration-300">IT Support</h3>
+            <p class="text-gray-600 text-center">Reliable technical support and maintenance to keep your systems running smoothly and securely.</p>
+            <div class="text-center mt-6">
+                <a href="contact.html" class="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition duration-300">Submit Request</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<section class="py-12 bg-gray-100">
+    <div class="container mx-auto">
+        <h2 class="text-4xl font-bold text-center text-gray-900 mb-10">Client Success Stories</h2>
+        <div class="slider-container">
+            <div class="slider-wrapper">
+                <div class="slide">
+                    <img src="https://via.placeholder.com/1200x500/A7F3D0/10B981?text=Project+Alpha" alt="Project Alpha">
+                    <div class="slide-content">
+                        <h2>Revolutionizing Online Presence</h2>
+                        <p>Helped a startup achieve 200% growth in online leads within 3 months.</p>
+                        <a href="#" class="btn">Read Case Study</a>
+                    </div>
+                </div>
+                <div class="slide">
+                    <img src="https://via.placeholder.com/1200x500/BFDBFE/2563EB?text=Brand+Refresh" alt="Brand Refresh">
+                    <div class="slide-content">
+                        <h2>Brand Identity Revamp</h2>
+                        <p>Transformed an outdated brand into a modern, recognizable powerhouse.</p>
+                        <a href="#" class="btn">View Portfolio</a>
+                    </div>
+                </div>
+                <div class="slide">
+                    <img src="https://via.placeholder.com/1200x500/FFEDD5/F59E0B?text=E-commerce+Launch" alt="E-commerce Launch">
+                    <div class="slide-content">
+                        <h2>Successful E-commerce Launch</h2>
+                        <p>Developed and launched a high-performing e-commerce platform from scratch.</p>
+                        <a href="#" class="btn">Discover More</a>
+                    </div>
+                </div>
+                <div class="slide">
+                    <img src="https://via.placeholder.com/1200x500/FEF2F2/EF4444?text=Content+Marketing" alt="Content Marketing">
+                    <div class="slide-content">
+                        <h2>Content Marketing Excellence</h2>
+                        <p>Implemented a content strategy that doubled website traffic and engagement.</p>
+                        <a href="#" class="btn">Explore Services</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slider-arrow arrow-left">&#10094;</div>
+            <div class="slider-arrow arrow-right">&#10095;</div>
+
+            <div class="slider-dots"></div>
+        </div>
+    </div>
+</section>
+
+<footer class="bg-gray-800 text-white p-8 text-center">
+    <div class="container mx-auto">
+        <p>&copy; 2025 SolutionC Service. All rights reserved.</p>
+        <div class="flex justify-center space-x-6 mt-4">
+            <a href="#" class="hover:text-blue-400 transition-colors duration-200">Privacy Policy</a>
+            <a href="#" class="hover:text-blue-400 transition-colors duration-200">Terms of Service</a>
+            <a href="#" class="hover:text-blue-400 transition-colors duration-200">Sitemap</a>
+        </div>
+    </div>
+</footer>
+
+<button class="scroll-to-top" onclick="scrollToTop()">&#9650;</button>
+
+<script>
+    const sliderWrapper = document.querySelector('.slider-wrapper');
+    const slides = document.querySelectorAll('.slide');
+    const dotsContainer = document.querySelector('.slider-dots');
+    const prevArrow = document.querySelector('.arrow-left');
+    const nextArrow = document.querySelector('.arrow-right');
+    let currentIndex = 0;
+    let autoSlideInterval;
+
+    // Create dots dynamically
+    slides.forEach((_, index) => {
+        const dot = document.createElement('span');
+        dot.classList.add('dot');
+        dot.addEventListener('click', () => goToSlide(index));
+        dotsContainer.appendChild(dot);
+    });
+    const dots = document.querySelectorAll('.dot');
+
+    function updateSlider() {
+        sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+        slides.forEach((slide, index) => {
+            if (index === currentIndex) {
+                slide.classList.add('active');
+            } else {
+                slide.classList.remove('active');
+            }
+        });
+        dots.forEach((dot, index) => {
+            if (index === currentIndex) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    }
+
+    function goToSlide(index) {
+        currentIndex = index;
+        updateSlider();
+        resetAutoSlide();
+    }
+
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % slides.length;
+        updateSlider();
+        resetAutoSlide();
+    }
+
+    function prevSlide() {
+        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+        updateSlider();
+        resetAutoSlide();
+    }
+
+    function startAutoSlide() {
+        autoSlideInterval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
+    }
+
+    function resetAutoSlide() {
+        clearInterval(autoSlideInterval);
+        startAutoSlide();
+    }
+
+    // Event Listeners
+    prevArrow.addEventListener('click', prevSlide);
+    nextArrow.addEventListener('click', nextSlide);
+
+    // Initial load
+    updateSlider();
+    startAutoSlide();
+
+    // Scroll to Top Button JavaScript
+    const scrollToTopBtn = document.querySelector('.scroll-to-top');
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 200) { // Show button after scrolling 200px
+            scrollToTopBtn.style.display = 'block';
+        } else {
+            scrollToTopBtn.style.display = 'none';
+        }
+    });
+
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth' // Smooth scroll animation
+        });
+    }
+</script>
+</body>
+</html>
